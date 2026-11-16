@@ -1,10 +1,17 @@
 {
   "base_url": "http://localhost:8000",
-  "resource": "items",
+  "resource": "animals",
   "id_field": "id",
   "missing_id": "999999",
   "list_key": null,
-  "create": { "title": "Первая запись" },
-  "update": { "title": "Изменённая запись" },
-  "required_field": "title"
+  "create": { "name": "Барон", "species": "Собака", "age": 3, "status": "в приюте" },
+  "update": { "status": "пристроено" },
+  "required_field": "name",
+  "errors": [
+    { "body": { "name": "" }, "field": "name" },
+    { "body": { "age": -1 }, "field": "age" },
+    { "body": { "status": "ошибка" }, "field": "status" },
+    { "body": { "species": 2 }, "field": "species" }
+  ],
+  "filter": { "param": "status", "value": "в приюте", "other": "пристроено" }
 }

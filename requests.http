@@ -1,6 +1,6 @@
 # Запросы для демонстрации. В VS Code нужно расширение REST Client, в JetBrains IDE всё встроено.
 # Над каждым запросом появляется ссылка «Send Request».
-# items заменить на свой ресурс, тела на поля своей сущности.
+# animals заменить на свой ресурс, тела на поля своей сущности.
 
 @base = http://localhost:8000
 
@@ -8,37 +8,82 @@
 GET {{base}}/health
 
 ### Создать
-POST {{base}}/api/items
+POST {{base}}/api/animals
 Content-Type: application/json
+{
+    "name": "Барон",
+    "species": "Собака",
+    "age": 3,
+    "status": "в приюте"
+}
 
-{ "title": "Первая запись" }
+### Создание (ошибка: пустая кличка)
+POST {{base}}/api/animals
+Content-Type: application/json
+{
+    "name": " ",
+    "species": "Собака",
+    "age": 3,
+    "status": "в приюте"
+}
+
+### Создание (ошибка: отрицательный возраст)
+POST {{base}}/api/animals
+Content-Type: application/json
+{
+    "name": "Мурка",
+    "species": "Кошка",
+    "age": -2,
+    "status": "в приюте"
+}
+
+### Создание (ошибка: неверный статус)
+POST {{base}}/api/animals
+Content-Type: application/json
+{
+    "name": "Мурка",
+    "species": "Кошка",
+    "age": -2,
+    "status": "улетел на луну"
+}
 
 ### Список
-GET {{base}}/api/items
+GET {{base}}/api/animals
+
+GET {{base}}/api/animals?status=в%20приюте
+
+GET {{base}}/api/animals?species=Кошка
+
+GET {{base}}/api/animals?limit=1&offset=0
 
 ### Получить одну запись
-GET {{base}}/api/items/1
+GET {{base}}/api/animals/1
+
+GET {{base}}/api/animals/999999
 
 ### Изменить
-PATCH {{base}}/api/items/1
+PATCH {{base}}/api/animals/1
 Content-Type: application/json
+{ "status": "пристроено" }
 
-{ "title": "Изменённая запись" }
+PUT {{base}}/api/animals/1
+Content-Type: application/json
+{ "name": "Барон", "species": "Собака", "age": 4, "status": "пристроено" }
 
 ### Удалить
-DELETE {{base}}/api/items/1
+DELETE {{base}}/api/animals/1
 
 ### После удаления должен быть 404
-GET {{base}}/api/items/1
+GET {{base}}/api/animals/1
 
 ### Сломанный JSON, должен быть 400
-POST {{base}}/api/items
+POST {{base}}/api/animals
 Content-Type: application/json
 
 { "title":
 
 ### Пустое обязательное поле, должен быть 400
-POST {{base}}/api/items
+POST {{base}}/api/animals
 Content-Type: application/json
 
 { "title": "" }
